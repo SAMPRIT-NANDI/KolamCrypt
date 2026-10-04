@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KolamCrypt - AI & Mathematical Kolam Secure Multi-Cloud Storage</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="background-globes">
+        <div class="globe globe-1"></div>
+        <div class="globe globe-2"></div>
+        <div class="globe globe-3"></div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="logo-area">
+                <span class="logo-icon">🎨</span>
+                <div>
+                    <h1>KolamCrypt</h1>
+                    <p class="subtitle">AI Kolam Pattern Encryption & Multi-Cloud Fragmented Storage</p>
+                </div>
+            </div>
+            <div class="badge">Vercel Ready • AES-256-GCM</div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs">
+            <button class="tab-btn active" data-tab="encrypt-tab">🔒 Encrypt & Fragment</button>
+            <button class="tab-btn" data-tab="decrypt-tab">🔓 Retrieve & Decrypt</button>
+            <button class="tab-btn" data-tab="kolam-tab">🖼️ Kolam Pattern Lab</button>
+            <button class="tab-btn" data-tab="cloud-tab">☁️ Cloud Shard Visualizer</button>
+            <button class="tab-btn" data-tab="metrics-tab">📊 Cryptographic Metrics</button>
+        </nav>
+
+        <main class="content-area">
+            <!-- TAB 1: ENCRYPT -->
+            <section id="encrypt-tab" class="tab-content active">
+                <div class="grid-2col">
+                    <div class="card glass-card">
+                        <h2>1. Upload File & Configuration</h2>
+                        <form id="encrypt-form">
+                            <div class="drop-zone" id="drop-zone">
+                                <span class="drop-icon">📁</span>
+                                <p id="file-label">Drag & drop your file here or <span>browse</span></p>
+                                <input type="file" id="file-input" required hidden>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password">Encryption Password</label>
+                                <input type="password" id="password" placeholder="Enter secret password..." required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="seed">Kolam Pattern Seed (Optional)</label>
+                                <input type="text" id="seed" placeholder="Custom seed or leave blank for auto...">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="num-fragments">Number of Multi-Cloud Fragments (Shards)</label>
+                                <select id="num-fragments">
+                                    <option value="3" selected>3 Shards (Drive, Dropbox, OneDrive)</option>
+                                    <option value="4">4 Shards</option>
+                                    <option value="6">6 Shards</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block" id="encrypt-btn">
+                                ✨ Generate Kolam & Encrypt File
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="card glass-card preview-card">
+                        <h2>2. Generated Kolam Pattern</h2>
+                        <p class="card-desc">Unique mathematical dot-grid Pulli Kolam generated deterministically from seed.</p>
+                        <div class="kolam-preview-box">
+                            <img id="kolam-img-preview" src="" alt="Kolam Pattern Preview" class="kolam-img hidden">
+                            <div id="kolam-placeholder" class="placeholder-box">
+                                <span>🎨</span>
+                                <p>Kolam pattern will appear here upon generation</p>
+                            </div>
+                        </div>
+                        <div id="seed-badge" class="seed-badge hidden">Seed: <span id="active-seed-text">-</span></div>
+                    </div>
+                </div>
+
+                <!-- Encryption Results Section -->
+                <div id="encrypt-results" class="card glass-card results-card hidden">
+                    <h2>🎉 File Encrypted & Distributed Successfully!</h2>
+                    <div class="result-details">
+                        <div class="meta-item"><span>File ID:</span> <strong id="res-file-id">KC-XXXXXX</strong></div>
+                        <div class="meta-item"><span>Original File:</span> <strong id="res-filename">file.dat</strong></div>
+                        <div class="meta-item"><span>Salt Digest:</span> <code id="res-salt">00000000</code></div>
+                    </div>
+
+                    <h3>Multi-Cloud Shard Distribution</h3>
+                    <div class="cloud-shards-grid" id="shards-container">
+                        <!-- Shard Cards dynamically populated -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 2: DECRYPT -->
+            <section id="decrypt-tab" class="tab-content">
+                <div class="card glass-card max-w-800">
+                    <h2>Retrieve Shards & Decrypt File</h2>
+                    <p class="card-desc">Provide your decryption credentials and stored cloud fragments to reassemble and decrypt.</p>
+
+                    <form id="decrypt-form">
+                        <div class="form-group">
+                            <label for="dec-password">Decryption Password</label>
+                            <input type="password" id="dec-password" placeholder="Enter original encryption password..." required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dec-seed">Kolam Pattern Seed</label>
+                            <input type="text" id="dec-seed" placeholder="Enter original seed string..." required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dec-salt">Salt Hex String</label>
+                            <input type="text" id="dec-salt" placeholder="Enter salt hex from encryption receipt..." required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dec-fragments-json">Fragments Payload JSON</label>
+                            <textarea id="dec-fragments-json" rows="4" placeholder="Paste fragments JSON or load from previous encryption..." required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-success btn-block" id="decrypt-btn">
+                            🔓 Verify Integrity & Decrypt File
+                        </button>
+                    </form>
+
+                    <div id="dec-status" class="status-box hidden"></div>
+                </div>
+            </section>
+
+            <!-- TAB 3: KOLAM LAB -->
+            <section id="kolam-tab" class="tab-content">
+                <div class="card glass-card">
+                    <h2>Procedural Kolam Generator Studio</h2>
+                    <p class="card-desc">Test the mathematical Pulli/Sikku Kolam pattern generator interactively with custom seeds.</p>
+                    <div class="lab-controls">
+                        <input type="text" id="lab-seed" placeholder="Type any seed or word..." value="KolamCrypt_Demo_Seed_2026">
+                        <button class="btn btn-secondary" id="generate-lab-btn">🔄 Generate New Pattern</button>
+                    </div>
+                    <div class="lab-display">
+                        <img id="lab-kolam-img" src="" alt="Kolam Lab Preview">
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 4: CLOUD VISUALIZER -->
+            <section id="cloud-tab" class="tab-content">
+                <div class="card glass-card">
+                    <h2>Simulated Multi-Cloud Storage Topology</h2>
+                    <p class="card-desc">Simulated distributed shards across Google Drive, Dropbox, and OneDrive storage endpoints.</p>
+                    
+                    <div class="topology-grid">
+                        <div class="cloud-node drive-node">
+                            <div class="cloud-icon">☁️</div>
+                            <h3>Google Drive Endpoint</h3>
+                            <p class="endpoint-status">Status: Active</p>
+                            <div class="shard-list" id="drive-shards">Shard #1 (Encrypted Block A)</div>
+                        </div>
+
+                        <div class="cloud-node dropbox-node">
+                            <div class="cloud-icon">📦</div>
+                            <h3>Dropbox Endpoint</h3>
+                            <p class="endpoint-status">Status: Active</p>
+                            <div class="shard-list" id="dropbox-shards">Shard #2 (Encrypted Block B)</div>
+                        </div>
+
+                        <div class="cloud-node onedrive-node">
+                            <div class="cloud-icon">🔷</div>
+                            <h3>OneDrive Endpoint</h3>
+                            <p class="endpoint-status">Status: Active</p>
+                            <div class="shard-list" id="onedrive-shards">Shard #3 (Encrypted Block C)</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 5: METRICS -->
+            <section id="metrics-tab" class="tab-content">
+                <div class="card glass-card">
+                    <h2>Cryptographic Architecture & Metrics</h2>
+                    <div class="metrics-grid">
+                        <div class="metric-box">
+                            <h4>Encryption Standard</h4>
+                            <p class="metric-val">AES-256-GCM</p>
+                            <span class="metric-sub">Authenticated 256-bit Cipher</span>
+                        </div>
+
+                        <div class="metric-box">
+                            <h4>Key Derivation</h4>
+                            <p class="metric-val">PBKDF2-SHA256</p>
+                            <span class="metric-sub">100,000 HMAC Iterations</span>
+                        </div>
+
+                        <div class="metric-box">
+                            <h4>Key Space Size</h4>
+                            <p class="metric-val">2²⁵⁶</p>
+                            <span class="metric-sub">~1.15 × 10⁷⁷ Combinations</span>
+                        </div>
+
+                        <div class="metric-box">
+                            <h4>Shard Integrity</h4>
+                            <p class="metric-val">SHA-256</p>
+                            <span class="metric-sub">Checksum verification per shard</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>KolamCrypt Security Platform &copy; 2026 • AI-Generated Kolam Encryption & Multi-Cloud Fragmented Storage</p>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
